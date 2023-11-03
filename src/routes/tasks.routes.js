@@ -1,12 +1,9 @@
 const { Router } = require('express');
-const pool = require('../db');
 
 const router = Router();
 
 router.get('/tasks', async (req, res) =>{
-    const result = await pool.query('SELECT NOW()');
-    console.log(result);
-    res.json('executed');
+    res.send('retrieving a list of task')
 });
 router.get('/tasks/10', (req, res) =>{
     res.send('retrieving a single task');

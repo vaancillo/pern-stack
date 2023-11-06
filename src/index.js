@@ -10,5 +10,11 @@ app.use(express.json())
 
 app.use(taskRoutes)
 
+app.use((err, req, res, next) => {
+  return res.json({
+    error: err.message
+  })
+})
+
 app.listen(4000)
 console.log('Server is running on port 4000')

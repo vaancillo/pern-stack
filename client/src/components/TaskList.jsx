@@ -9,6 +9,18 @@ const TaskList = () => {
     const data = await response.json()
     setTask(data)
   }
+
+  const handleDelete = async id => {
+    try {
+      await fetch(`http://localhost:4000/tasks/${id}`, {
+        method: 'DELETE'
+      })
+      setTask(task.filter(task => task.id !== id))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   useEffect(() => {
     loadTask()
   }, [])
@@ -38,7 +50,7 @@ const TaskList = () => {
                 <Button variant='contained' color='inherit' onClick={() => console.log('edit')}>
                   Edit
                 </Button>
-                <Button variant='contained' color='warning' onClick={() => console.log('Delete')} style={{ marginLeft: '.5rem' }}>
+                <Button variant='contained' color='warning' onClick={() => handleDelete(task.id)} style={{ marginLeft: '.5rem' }}>
                   Delete
                 </Button>
               </div>

@@ -1,6 +1,10 @@
+import { Button } from "@mui/material"
+
 const Navbar = () => {
   return (
-    <div>Navbar</div>
+    <div>Navbar
+      <Button variant='contained'>Click me</Button>
+    </div>
   )
 }
 export default Navbar

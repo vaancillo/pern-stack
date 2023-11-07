@@ -27,7 +27,6 @@ const TaskForm = () => {
           'Content-type': 'application/json'
         }
       })
-      setEditing(false)
     } else {
       await fetch('http://localhost:4000/tasks', {
         method: 'POST',
@@ -69,7 +68,7 @@ const TaskForm = () => {
           }}
         >
           <Typography variant='5' textAlign='center' color='white'>
-            Create Task
+            {editing ? 'Edit Task' : 'Create task'}
           </Typography>
           <CardContent>
             <form onSubmit={handleSubmit}>
@@ -102,7 +101,7 @@ const TaskForm = () => {
                 InputLabelProps={{ style: { color: 'white' } }}
               />
               <Button variant='contained' type='submit' disabled={!task.title || !task.description}>
-                {loading ? <CircularProgress color='inherit' size={24} /> : 'Create Task'}
+                {loading ? <CircularProgress color='inherit' size={24} /> : 'Save'}
               </Button>
             </form>
           </CardContent>

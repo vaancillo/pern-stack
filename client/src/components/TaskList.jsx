@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, Typography, Button } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 const TaskList = () => {
   const [task, setTask] = useState([])
+  const navigate = useNavigate()
 
   const loadTask = async () => {
     const response = await fetch('http://localhost:4000/tasks')
@@ -47,7 +49,7 @@ const TaskList = () => {
               </div>
 
               <div>
-                <Button variant='contained' color='inherit' onClick={() => console.log('edit')}>
+                <Button variant='contained' color='inherit' onClick={() => navigate(`/tasks/${task.id}/edit`)}>
                   Edit
                 </Button>
                 <Button variant='contained' color='warning' onClick={() => handleDelete(task.id)} style={{ marginLeft: '.5rem' }}>

@@ -1,6 +1,6 @@
 import { Button, Card, CardContent, CircularProgress, Grid, TextField, Typography } from '@mui/material'
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const TaskForm = () => {
   const [task, setTask] = useState({
@@ -8,22 +8,35 @@ const TaskForm = () => {
     description: ''
   })
   const [loading, setLoading] = useState(false)
+  const [editing, setEditing] = useState(false)
 
   const navigate = useNavigate()
+
+  const params = useParams()
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
     setLoading(true)
 
-    const res = await fetch('http://localhost:4000/tasks', {
-      method: 'POST',
-      body: JSON.stringify(task),
-      headers: {
-        'Content-type': 'application/json'
-      }
-    })
-    const data = await res.json()
-    console.log(data)
+    if (editing) {
+      await fetch(`http://localhost:4000/tasks/${params.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(task),
+        headers: {
+          'Content-type': 'application/json'
+        }
+      })
+      setEditing(false)
+    } else {
+      await fetch('http://localhost:4000/tasks', {
+        method: 'POST',
+        body: JSON.stringify(task),
+        headers: {
+          'Content-type': 'application/json'
+        }
+      })
+    }
 
     setLoading(false)
     navigate('/')
@@ -32,6 +45,19 @@ const TaskForm = () => {
   const handleChange = (e) => {
     setTask({ ...task, [e.target.name]: e.target.value })
   }
+
+  const loadTask = async (id) => {
+    const res = await fetch(`http://localhost:4000/tasks/${id}`)
+    const data = await res.json()
+    setTask({ title: data.title, description: data.description })
+    setEditing(true)
+  }
+
+  useEffect(() => {
+    if (params.id) {
+      loadTask(params.id)
+    }
+  }, [params.id])
 
   return (
     <Grid container direction='column' alignItems='center' justifyContent='center'>
@@ -55,6 +81,7 @@ const TaskForm = () => {
                   margin: '.5rem 0'
                 }}
                 name='title'
+                value={task.title}
                 onChange={handleChange}
                 inputProps={{ style: { color: 'white' } }}
                 InputLabelProps={{ style: { color: 'white' } }}
@@ -69,6 +96,7 @@ const TaskForm = () => {
                   margin: '.5rem 0'
                 }}
                 name='description'
+                value={task.description}
                 onChange={handleChange}
                 inputProps={{ style: { color: 'white' } }}
                 InputLabelProps={{ style: { color: 'white' } }}

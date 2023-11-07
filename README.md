@@ -25,10 +25,10 @@ git clone https://github.com/vaancillo/pern-stack.git
 ```
 
 to run the backend you can use docker:
-
+first you gotta make your own database server and fill the archive .env
 ```
-cd server
 docker-compose up
+npm run dev
 ```
 
 to run the frontend:
